@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body_class %}wk-removed{% endblock %}
+{% block main %}
+<h1><s>{{ title }}</s></h1>
+<p>This article was removed from Wikipedia on {{ deleted.deleted_at[:10] }}.</p>
+<p><a href="/search?q={{ title|urlencode }}">Search for related articles</a> or
+<a href="{{ live_url }}">check it online</a>.</p>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  {% for href in zim_styles|default([]) %}<link rel="stylesheet" href="{{ href }}">
+  {% endfor %}{% include "_head.html" %}
+</head>
+<body class="wk-page {% block body_class %}{% endblock %}">
+  {% include "_topbar.html" %}
+  <main class="wk-main">{% block main %}{% endblock %}</main>
+  {% block footer %}{% endblock %}
+</body>
+</html>

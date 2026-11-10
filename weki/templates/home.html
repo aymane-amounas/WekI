@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body_class %}wk-home{% endblock %}
+{% block main %}
+<h1 class="wk-title"><img class="wk-home-logo" src="/assets/wiki-logo.svg" alt="WekI"></h1>
+{% if has_zim %}
+<p class="wk-lede">{{ "{:,}".format(article_count) }} articles from {{ snapshot }}, on this disk.</p>
+<form class="wk-search wk-search-big" action="/search" role="search" autocomplete="off">
+  <input name="q" type="search" placeholder="What do you want to read about?" aria-label="Search articles" autofocus data-suggest>
+  <ul class="wk-suggest" hidden></ul>
+</form>
+<p><a href="{{ main_path|wiki_url }}">Open the main page</a></p>
+{% if recent %}
+<h2>Pick up where you left off</h2>
+<ul class="wk-recent">
+  {% for path, name in recent %}<li><a href="{{ path|wiki_url }}">{{ name }}</a></li>{% endfor %}
+</ul>
+{% endif %}
+{% else %}
+<p class="wk-lede">No Wikipedia snapshot on this disk yet.</p>
+<p>Download one (about 1 GB), then restart WekI:</p>
+<pre>uv run python scripts/download_zim.py</pre>
+{% endif %}
+{% endblock %}

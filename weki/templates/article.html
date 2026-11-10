@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body_class %}{% if newer %}wk-fresh{% endif %}{% endblock %}
+{% block main %}
+<article class="wk-article">
+  <p class="wk-badge">{% if newer %}Updated {{ article.rev_ts[:10] }}, newer than your snapshot{% else %}Last edited {{ article.rev_ts[:10] }}{% endif %}</p>
+  <h1>{{ article.title }}</h1>
+  <div class="mw-body-content mw-parser-output">{{ body }}</div>
+</article>
+{% endblock %}
+{% block footer %}{% include "_footer.html" %}{% endblock %}

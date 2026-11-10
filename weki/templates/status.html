@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>Sync</h1>
+<p class="wk-lede">Fetch articles changed on {{ status.wiki_domain }} since your snapshot.</p>
+<p><button type="button" data-sync>Sync now</button> <span data-sync-state role="status">{% if status.running %}{{ status.phase }}{% endif %}</span></p>
+<dl class="wk-facts">
+  <dt>Snapshot</dt><dd>{% if status.zim_file %}{{ status.zim_file }}, {{ "{:,}".format(status.zim_articles) }} articles{% else %}None on this disk{% endif %}</dd>
+  <dt>Updated articles</dt><dd data-field="articles">{{ "{:,}".format(status.articles) }}</dd>
+  <dt>Removed articles</dt><dd data-field="deleted">{{ "{:,}".format(status.deleted) }}</dd>
+  <dt>Waiting to fetch</dt><dd data-field="backlog">{{ "{:,}".format(status.backlog) }}</dd>
+  <dt>Changes read up to</dt><dd data-field="last_ts">{{ status.last_ts or "Not synced yet" }}</dd>
+  <dt>Last sync</dt><dd data-field="last_run">{{ status.last_run or "Not synced yet" }}</dd>
+  <dt>Result</dt><dd data-field="last_result">{{ status.last_result or "Not synced yet" }}</dd>
+</dl>
+{% endblock %}

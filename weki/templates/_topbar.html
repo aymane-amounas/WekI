@@ -1,0 +1,11 @@
+<header class="wk-bar">
+  <a class="wk-mark" href="/" aria-label="WekI home">
+    <img class="wk-logo" src="/assets/wiki-logo.svg" alt="WekI">
+  </a>
+  <form class="wk-search" action="/search" role="search" autocomplete="off">
+    <input name="q" type="search" placeholder="Search" aria-label="Search articles" value="{{ q|default('') }}" data-suggest>
+    <ul class="wk-suggest" hidden></ul>
+  </form>
+  <a class="wk-link" href="/status">Sync</a>
+  <button class="wk-theme" type="button" data-theme-toggle hidden>Theme: auto</button>
+</header>

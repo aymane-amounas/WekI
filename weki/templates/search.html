@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>{{ q }}</h1>
+{% if hits %}
+<ol class="wk-results">
+  {% for hit in hits %}
+  <li{% if hit.updated %} class="wk-result-fresh"{% endif %}>
+    <a href="{{ hit.path|wiki_url }}">{{ hit.title }}</a>
+    {% if hit.updated %}<span class="wk-updated">Updated</span>{% endif %}
+    {% if hit.snippet_html %}<p>{{ hit.snippet_html|safe }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% elif q.strip() %}
+<p>No articles match. Try fewer or simpler words.</p>
+{% else %}
+<p>Type something in the search box.</p>
+{% endif %}
+{% endblock %}

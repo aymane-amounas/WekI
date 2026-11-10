@@ -1,0 +1,17 @@
+zim_path = ""
+overlay_path = "data/overlay.db"
+wiki_domain = "simple.wikipedia.org"
+mode = "nopic"
+journal_mode = "DELETE"
+
+[server]
+host = "127.0.0.1"
+port = 8787
+
+[sync]
+cap = 300
+concurrency = 2
+delay_seconds = 0.5
+overlap_minutes = 5
+first_sync_lookback_days = 5
+user_agent = "WekI/0.1.0-alpha.1 (https://github.com/aymane-amounas/WekI; bot)"

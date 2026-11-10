@@ -1,0 +1,42 @@
+[project]
+name = "weki"
+version = "0.1.0-alpha.1"
+description = "Offline Wikipedia reader with a SQLite overlay synced from Wikimedia."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = [
+    "fastapi>=0.162",
+    "httpx>=0.28",
+    "jinja2>=3.1",
+    "libzim>=4.1,<5",
+    "selectolax>=1.0",
+    "uvicorn>=0.54",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "respx>=0.23",
+    "ruff>=0.17",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/backup_overlay.py" = ["E402"]
+"scripts/benchmark_overlay.py" = ["E402"]
+"scripts/inspect_zim.py" = ["E402"]

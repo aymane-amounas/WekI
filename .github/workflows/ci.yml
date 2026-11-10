@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v6
+      - name: Install locked dependencies
+        run: uv sync --locked --all-groups
+      - name: Run tests
+        run: uv run --locked pytest
+      - name: Check lint
+        run: uv run --locked ruff check .
+      - name: Check formatting
+        run: uv run --locked ruff format --check .
+
+  dependency-audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Export locked dependencies
+        run: uv export --locked --all-groups --no-emit-project --format requirements-txt --output-file "$RUNNER_TEMP/requirements.txt"
+      - name: Audit dependencies
+        run: uv tool run --from pip-audit pip-audit --requirement "$RUNNER_TEMP/requirements.txt"
+
+  windows:
+    name: Windows compatibility
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+      - name: Install locked dependencies
+        run: uv sync --locked --all-groups
+      - name: Run tests
+        run: uv run --locked pytest
+      - name: Check lint and formatting
+        run: |
+          uv run --locked ruff check .
+          uv run --locked ruff format --check .
+
+  macos:
+    name: macOS compatibility
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+      - name: Install locked dependencies
+        run: uv sync --locked --all-groups
+      - name: Run tests
+        run: uv run --locked pytest
+      - name: Check lint and formatting
+        run: |
+          uv run --locked ruff check .
+          uv run --locked ruff format --check .

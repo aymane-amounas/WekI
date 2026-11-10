@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>{{ title }}</h1>
+<p>This article isn't on this disk.</p>
+<p><a href="/search?q={{ title|urlencode }}">Search for it</a> or
+<a href="{{ live_url }}">look it up online</a>.</p>
+{% endblock %}
