@@ -1,0 +1,44 @@
+name: Bug report
+description: Something in WekI does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Security problem? Do not file it here. Use a [private report](https://github.com/aymane-amounas/WekI/security/advisories/new).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Version from `pyproject.toml` or the release tag
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Python version, ZIM file name (e.g. wikipedia_en-simple_all_nopic_2026-09.zim)
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Terminal output from `uv run --locked python run.py`, and the Sync page status if relevant
+      render: text
