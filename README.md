@@ -18,6 +18,25 @@ WekI is an offline Wikipedia reader that keeps your local knowledge library up t
 
 It combines a Kiwix ZIM archive with a lightweight SQLite database. Read your downloaded Wikipedia snapshot anywhere, then synchronize newer articles and changes when you're back online.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="assets/screenshots/home.png" alt="WekI home page with 400,061 local articles" width="420"></td>
+    <td><img src="assets/screenshots/article.png" alt="Article updated after the snapshot date" width="420"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Home: 400,061 Simple English articles on disk</sub></td>
+    <td align="center"><sub>An article synced newer than the ZIM snapshot</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><img src="assets/screenshots/status.png" alt="Sync status page" width="560"></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><sub>Sync status: updated, removed, and queued articles with cursor and last result</sub></td>
+  </tr>
+</table>
+
 ## Why WekI?
 
 - **Read anywhere.** Access your local Wikipedia without an internet connection.
@@ -78,6 +97,21 @@ The ZIM archive is the original snapshot. SQLite stores newer articles, redirect
 When an article is requested, WekI checks the updated content first, then deletion records and redirects, and finally the original archive.
 
 During synchronization, discovered changes enter a persistent backlog. WekI fetches them gradually and keeps unfinished work for later runs.
+
+## Measured results
+
+Measured on macOS (Apple Silicon). Full method, reproduction steps, and limits are in [`benchmarks/`](benchmarks/).
+
+| What | Result | Report |
+|---|---:|---|
+| Real ZIM article lookup, p50 / p95 | 0.002 / 0.013 ms | [real-zim-openzim](benchmarks/real-zim-openzim.md) |
+| Real ZIM full-text search, p50 / p95 | 1.40 / 1.64 ms | [real-zim-openzim](benchmarks/real-zim-openzim.md) |
+| Overlay upsert with FTS, 100k articles | 68,151 articles/s | [overlay-macos-arm64](benchmarks/overlay-macos-arm64.md) |
+| Updated-article search, p50 / p95 | 0.42 / 0.48 ms | [overlay-macos-arm64](benchmarks/overlay-macos-arm64.md) |
+| Peak memory (overlay benchmark) | 37.7 MiB | [overlay-macos-arm64](benchmarks/overlay-macos-arm64.md) |
+| Live sync against simple.wikipedia.org | initial + incremental runs, 0 failed fetches, integrity `ok` | [live-sync-2026-11-10](benchmarks/live-sync-2026-11-10.md) |
+
+The live sync test is a smoke test over short windows, not a throughput benchmark. The test suite (188 tests) uses local fixtures and mocked network responses.
 
 ## For developers
 
