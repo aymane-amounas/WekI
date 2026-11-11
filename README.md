@@ -51,7 +51,7 @@ Open **http://127.0.0.1:8787** in your browser.
 
 Your local archive works without synchronization. When you have an internet connection, select **Sync → Sync now** to fetch newer content.
 
-If WekI was started before the ZIM download finished, restart it after the download so it discovers the archive. In the current local setup, **http://127.0.0.1:8787** is the earlier instance showing the download page, while the ZIM-backed main page is at **http://127.0.0.1:8788**. To start another instance on that alternate port, run `uv run --locked python run.py --port 8788`.
+If WekI was started before the ZIM download finished, restart it so it discovers the archive. To use a different port, run `uv run --locked python run.py --port <port>`.
 
 ## How it works
 
@@ -151,7 +151,3 @@ Wikipedia content is subject to its own licensing, including **CC BY-SA 4.0** at
 ---
 
 <sub>Built by [Aymane](https://github.com/aymane-amounas)</sub>
-
----
-
-side note: IDK HOW THIS WORKED BUT IT DID
