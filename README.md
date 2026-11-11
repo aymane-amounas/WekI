@@ -18,6 +18,14 @@ WekI is an offline Wikipedia reader that keeps your local knowledge library up t
 
 It combines a Kiwix ZIM archive with a lightweight SQLite database. Read your downloaded Wikipedia snapshot anywhere, then synchronize newer articles and changes when you're back online.
 
+## At a glance
+
+| Name | What it does | Stack | Demo |
+|---|---|---|---|
+| **WekI** | Offline Wikipedia reader that syncs newer articles when you're back online | Python · SQLite · libzim | [Screenshots](#screenshots) · [Live-sync report](benchmarks/live-sync-2026-11-10.md) · [Quickstart](#get-started) |
+
+> No hosted link: WekI is a local-first, single-user app. The reproducible local demo is the [Get started](#get-started) quickstart; see [Screenshots](#screenshots) and the [live-sync report](benchmarks/live-sync-2026-11-10.md) for recorded evidence.
+
 ## Screenshots
 
 <table>
