@@ -61,7 +61,7 @@ It combines a Kiwix ZIM archive with a lightweight SQLite database. Read your do
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/)
-- Disk space for your selected Wikipedia archive and local database.
+- About 1 GB of free disk space for the Simple English archive, plus room for the local database. The first archive download and the first sync each take a few minutes on a typical connection.
 
 ### Install
 
