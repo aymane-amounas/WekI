@@ -92,6 +92,15 @@ def create_app(config: Config) -> FastAPI:
         overlay.close()
 
     app = FastAPI(title="WekI", lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
+
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        """nosniff everywhere; no-referrer so a live-wiki click can't leak the local path read."""
+        response = await call_next(request)
+        response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        response.headers.setdefault("Referrer-Policy", "no-referrer")
+        return response
+
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=LOCAL_HOSTS)
     app.mount("/assets", StaticFiles(directory=HERE.parent / "assets"), name="assets")
     app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
