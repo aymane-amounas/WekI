@@ -176,6 +176,30 @@ def test_sync_runs_in_background_and_reports_offline(client):
     assert data["last_result"] == "offline"
 
 
+@pytest.mark.parametrize(
+    "url", ["/", "/wiki/Ulm", "/status.json", "/suggest?q=U", "/assets/wiki-logo.svg"]
+)
+def test_every_response_sets_nosniff_and_no_referrer(client, url):
+    headers = client.get(url).headers
+    assert headers["x-content-type-options"] == "nosniff"
+    assert headers["referrer-policy"] == "no-referrer"
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "/wiki/../../config.toml",
+        "/wiki/%2e%2e%2f%2e%2e%2fconfig.toml",
+        "/static/../weki/server.py",
+        "/assets/..%2f..%2fconfig.toml",
+    ],
+)
+def test_path_traversal_does_not_escape(client, url):
+    resp = client.get(url)
+    assert resp.status_code == 404
+    assert "wiki_domain" not in resp.text
+
+
 def test_inject_keeps_content():
     page = b"<html><head><title>x</title></head><body class='a'><p>y</p></body></html>"
     out = inject(page, head="H", top="T", bottom="B")

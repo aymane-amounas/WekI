@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/version-0.1.0--alpha.1-blue" alt="Version 0.1.0-alpha.1">
   <img src="https://img.shields.io/badge/status-experimental-orange" alt="Experimental">
   <img src="https://img.shields.io/badge/license-GPL--3.0--or--later-green" alt="GPL-3.0-or-later">
+  <a href="https://github.com/aymane-amounas/WekI/actions/workflows/ci.yml"><img src="https://github.com/aymane-amounas/WekI/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
 WekI is an offline Wikipedia reader that keeps your local knowledge library up to date.
@@ -108,7 +109,7 @@ During synchronization, discovered changes enter a persistent backlog. WekI fetc
 
 ## Measured results
 
-Measured on macOS (Apple Silicon). Full method, reproduction steps, and limits are in [`benchmarks/`](benchmarks/).
+Measured on macOS (Apple Silicon). The method, iteration counts, and caveats are in [`docs/benchmarks.md`](docs/benchmarks.md); the raw reports and reproduction steps are in [`benchmarks/`](benchmarks/).
 
 | What | Result | Report |
 |---|---:|---|
@@ -131,6 +132,8 @@ Built with Python, SQLite, and [libzim](https://github.com/kiwix/libzim).
 - **Sync worker:** consumes Wikimedia revision and page-log events, fetches article content, and maintains a persistent cursor and backlog.
 - **Recovery:** uses database transactions to keep article updates, backlog changes, and cursor progress consistent.
 - **Networking:** uses a bot User-Agent, bounded concurrency, `maxlag`, retry handling, and backoff.
+
+Design docs: [`docs/architecture.md`](docs/architecture.md), the decision records in [`docs/adr/`](docs/adr/), and [`docs/recovery.md`](docs/recovery.md) for the interrupted-sync and consistency guarantees.
 
 ### for your development setup
 
@@ -156,7 +159,7 @@ uv run --locked python scripts/backup_overlay.py backups/overlay.db
 
 Keep the matching ZIM archive and `config.toml` separately. A database backup alone is not a complete backup of your library.
 
-For restore instructions and storage limitations, see [the recovery documentation](benchmarks/filesystem-compatibility.md) and project documentation.
+For restore instructions and the consistency guarantees, see [`docs/recovery.md`](docs/recovery.md). Storage and filesystem limits are in [`benchmarks/filesystem-compatibility.md`](benchmarks/filesystem-compatibility.md).
 
 ## Current limitations
 
@@ -164,7 +167,6 @@ WekI is still evolving.
 
 - Full English Wikipedia synchronization at scale is not solved.
 - Removable-drive reliability and exFAT, NTFS, and ext4 compatibility are not certified.
-- Hosted CI has not yet been verified.
 - AI search, image synchronization, packaging, and multilingual support are not implemented.
 
 See the [benchmark reports](benchmarks/) for actual test results and compatibility evidence.
