@@ -1,6 +1,6 @@
 # Real ZIM benchmarks
 
-Two real archives were tested to distinguish basic format integration from a materially larger Wikipedia dataset. The small OpenZIM wiki validates the reader on a compact archive; the 478.5 MB Afrikaans Wikipedia snapshot provides a larger archive and index. Neither represents the full English Wikipedia.
+I tested two real archives to separate two different questions: does the reader handle the ZIM format at all, and does it hold up on a materially larger dataset. The small OpenZIM wiki answers the first on a compact archive. The 478.5 MB Afrikaans Wikipedia snapshot answers the second with a bigger archive and index. Neither one is full English Wikipedia, and I'm not pretending otherwise.
 
 ## Dataset and provenance
 
@@ -13,11 +13,11 @@ Two real archives were tested to distinguish basic format integration from a mat
 - Contents: 97 articles, 176 entries, new namespace scheme, full-text index
 - Metadata: title `OpenZim Wiki`, date `2026-11-05`, language `eng`
 
-The archive was fetched for this test only and is not included in the repository. This is a genuine, compact Kiwix ZIM, but it is the OpenZIM wiki—not a Wikipedia snapshot and not evidence for the performance of a full Wikipedia archive.
+I fetched the archive for this test only and it's not in the repository. It's a genuine, compact Kiwix ZIM, but it's the OpenZIM wiki, not a Wikipedia snapshot, so it says nothing about how a full Wikipedia archive would perform.
 
 ## Reproduction
 
-Check available disk space before downloading. The tested archive is about 3.27 MB.
+Check your free disk space before downloading. The tested archive is about 3.27 MB.
 
 ```bash
 curl -fL \
@@ -49,9 +49,9 @@ Measured 2026-11-10 on macOS 27.2, ARM64, Python 3.12.13, SQLite 3.53.1.
 | Missing path returns `None` | yes |
 | Peak process RSS | 40.4 MiB |
 
-Separate integration smoke check verified the main-page redirect, article retrieval, metadata, full-text results, missing-page behavior, and overlay precedence over a ZIM article. The `ZimReader` resolved the archive's redirecting main entry to `OpenZIM`; overlay content at that path won in `Resolver`.
+A separate integration smoke check confirmed the main-page redirect, article retrieval, metadata, full-text results, missing-page behavior, and overlay precedence over a ZIM article. The `ZimReader` resolved the archive's redirecting main entry to `OpenZIM`, and overlay content at that path won in `Resolver`.
 
-These are warm local measurements on a tiny archive. They do not predict cold-cache timings, memory for large archives, large-Wikipedia article sizes, synchronization time, filesystem removal behavior, or another machine's performance. A separate generated test ZIM verifies retrieval of a 2 MiB article; the real archive's largest HTML article scanned for this report was 33,551 bytes.
+These are warm local measurements on a tiny archive. They don't predict cold-cache timings, memory for large archives, large-Wikipedia article sizes, sync time, filesystem removal behavior, or how another machine behaves. A separate generated test ZIM verifies retrieval of a 2 MiB article; the largest HTML article this report scanned from the real archive was 33,551 bytes.
 
 ## Larger real Wikipedia archive
 
@@ -65,11 +65,11 @@ These are warm local measurements on a tiny archive. They do not predict cold-ca
 - Articles: 163,636
 - Full-text index: present
 
-Before downloading, the exact content length and `.sha256` sidecar were checked; the workspace had about 211 GiB free. The archive was downloaded from a Kiwix-listed mirror, checksum-verified, benchmarked, and removed from the temporary directory after the run. No project data was changed.
+Before downloading I checked the exact content length and the `.sha256` sidecar; the workspace had about 211 GiB free. The archive was pulled from a Kiwix-listed mirror, checksum-verified, benchmarked, and deleted from the temporary directory after the run. No project data changed.
 
 ### Results
 
-Measured 2026-11-10 on macOS 27.2, ARM64, Python 3.12.13, SQLite 3.53.1. The benchmark performs warm repeated reads and searches; it does not build the ZIM's precomputed index.
+Measured 2026-11-10 on macOS 27.2, ARM64, Python 3.12.13, SQLite 3.53.1. The benchmark does warm repeated reads and searches; it does not build the ZIM's precomputed index.
 
 | Metric | Result |
 | --- | ---: |
@@ -87,9 +87,9 @@ Measured 2026-11-10 on macOS 27.2, ARM64, Python 3.12.13, SQLite 3.53.1. The ben
 | File descriptors before / after cycles | 9 / 9 |
 | Process peak RSS | 71.4 MiB |
 
-libzim emitted non-fatal `No stemming for language 'af'` warnings during the search loop; searches and suggestions still returned results. `ZimReader` does not expose a native `close()` method; the benchmark releases each reader by dropping its Python reference and records unchanged file-descriptor counts on this macOS run. This does not establish resource behavior on other bindings or operating systems.
+libzim printed non-fatal `No stemming for language 'af'` warnings during the search loop; searches and suggestions still returned results. `ZimReader` doesn't expose a native `close()`, so the benchmark releases each reader by dropping its Python reference, and the file-descriptor count came back unchanged on this macOS run. That's one data point, not proof of resource behavior on other bindings or operating systems.
 
-The archive is much larger than the 3.27 MB smoke-test archive, but still only 163,636 articles and is not an English Wikipedia snapshot. Its indexes were built by Kiwix, not by WekI. These warm-cache results do not establish full-Wikipedia open time, memory, search performance, indexing time, or portable-filesystem behavior.
+This archive is much bigger than the 3.27 MB smoke-test one, but it's still only 163,636 articles and it isn't English Wikipedia. Kiwix built its indexes, not WekI. So these warm-cache results don't establish full-Wikipedia open time, memory, search performance, indexing time, or portable-filesystem behavior.
 
 ### Reproduction
 
@@ -102,4 +102,4 @@ uv run --locked python scripts/benchmark_overlay.py \
   --skip-overlay
 ```
 
-The downloader verifies the official SHA-256 sidecar. Catalog contents change over time, so compare the downloaded filename and hash with the values above before treating a future run as the same dataset.
+The downloader verifies the official SHA-256 sidecar. Catalog contents change over time, so compare the downloaded filename and hash against the values above before you treat a later run as the same dataset.

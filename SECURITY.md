@@ -2,12 +2,10 @@
 
 ## Reporting a vulnerability
 
-Please **do not** open a public issue for security problems.
+Please don't open a public issue for a security problem. Report it privately through GitHub instead: **Security → Report a vulnerability** on this repository, or use the [direct link](https://github.com/aymane-amounas/WekI/security/advisories/new). Include the version, the steps to reproduce, and what impact you saw.
 
-Report privately through GitHub: **Security → Report a vulnerability** on this repository ([direct link](https://github.com/aymane-amounas/WekI/security/advisories/new)). Include the version, steps to reproduce, and the impact you observed.
-
-You should get a first response within 7 days. Fixes are released as soon as practical, and reporters are credited unless they prefer otherwise.
+I aim to get back to you within 7 days, and fixes go out as soon as they reasonably can. Reporters get credited unless you'd rather stay anonymous.
 
 ## Supported versions
 
-WekI is pre-1.0. Only the latest commit on `main` and the latest release receive security fixes.
+WekI is pre-1.0, so only the latest commit on `main` and the latest release get security fixes.

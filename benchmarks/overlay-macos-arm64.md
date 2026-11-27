@@ -26,11 +26,11 @@ uv run --locked python scripts/benchmark_overlay.py --articles 100000 --sync-pag
 | Peak process RSS | 37.7 MiB |
 | `PRAGMA integrity_check` | `ok` |
 
-The normal upsert measurement uses WekI's article API and its FTS triggers. To isolate bulk insertion and FTS costs, the benchmark then clears the rows, temporarily disables the article-insert FTS trigger, times the bulk insert, rebuilds the FTS index, and restores the trigger. Those staged timings are diagnostic and are not the application's normal per-article sync path.
+The "normal upsert" row is the one that matters for real use: it goes through WekI's article API and its FTS triggers, which is exactly what a sync does. The rows after it exist to pull apart where the time goes. The benchmark clears the table, temporarily turns off the article-insert FTS trigger, times the bulk insert, rebuilds the FTS index, and puts the trigger back. Those staged timings are diagnostic only. They are not the path a normal per-article sync takes.
 
 ## Synthetic synchronization
 
-The same command ran a separate synthetic synchronization using an in-memory client (no network or Wikimedia):
+The same command also ran a separate synthetic sync against an in-memory client, so no network or Wikimedia involved:
 
 | Metric | Result |
 | --- | ---: |
@@ -44,4 +44,4 @@ The same command ran a separate synthetic synchronization using an in-memory cli
 | Cursor consistent | yes |
 | SQLite integrity | `ok` |
 
-This sync benchmark excludes HTTP latency, API pagination cost, rate limits, response-size variation, and real Wikimedia behavior. It is not a full synchronization throughput estimate. The generated articles are intentionally small and uniform; results depend on machine and filesystem and do not predict production performance, exFAT, or Windows behavior.
+This one leaves out everything that actually makes sync slow in the wild: HTTP latency, API pagination, rate limits, response-size variation, the real behavior of Wikimedia. So don't read it as a throughput estimate. The generated articles are deliberately small and uniform, the numbers depend on the machine and filesystem, and none of this predicts production performance, exFAT, or Windows.
